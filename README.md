@@ -199,7 +199,7 @@ The phone number can't have `+` or `()` or `-`, only numbers, you must provide c
 ```ts
 import makeWASocket from 'secret-company-ltd'
 
-const suki = makeWASocket({
+const guns = makeWASocket({
     // can provide additional config here
     printQRInTerminal: false //need to be false
 })
@@ -218,7 +218,7 @@ if (!guns.authState.creds.registered) {
     - If you'd like to emulate a desktop connection (and receive more message history), this browser setting to your Socket config:
 
 ```ts
-const suki = makeWASocket({
+const guns = makeWASocket({
     ...otherOpts,
     // can use Windows, Ubuntu here too
     browser: Browsers.macOS('Desktop'),
@@ -234,7 +234,7 @@ const suki = makeWASocket({
     ```ts
     const groupCache = new NodeCache({stdTTL: 5 * 60, useClones: false})
 
-    const suki = makeWASocket({
+    const guns = makeWASocket({
         cachedGroupMetadata: async (jid) => groupCache.get(jid)
     })
 
@@ -252,7 +252,7 @@ const suki = makeWASocket({
 ### Improve Retry System & Decrypt Poll Votes
 - If you want to improve sending message, retrying when error occurs and decrypt poll votes, you need to have a store and set `getMessage` config in socket like this:
     ```ts
-    const suki = makeWASocket({
+    const guns = makeWASocket({
         getMessage: async (key) => await getMessageFromStore(key)
     })
     ```
@@ -260,7 +260,7 @@ const suki = makeWASocket({
 ### Receive Notifications in Whatsapp App
 - If you want to receive notifications in whatsapp app, set `markOnlineOnConnect` to `false`
     ```ts
-    const suki = makeWASocket({
+    const guns = makeWASocket({
         markOnlineOnConnect: false
     })
     ```
@@ -276,7 +276,7 @@ const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
 
 // will use the given state to connect
 // so if valid credentials are available -- it'll connect without QR
-const suki = makeWASocket({ auth: state })
+const guns = makeWASocket({ auth: state })
 
 // this will be called as soon as the credentials are updated
 guns.ev.on('creds.update', saveCreds)
@@ -298,7 +298,7 @@ They're all nicely typed up, so you shouldn't have any issues with an Intellisen
 
 You can listen to these events like this:
 ```ts
-const suki = makeWASocket()
+const guns = makeWASocket()
 guns.ev.on('messages.upsert', ({ messages }) => {
     console.log('got messages', messages)
 })
@@ -315,7 +315,7 @@ import { Boom } from '@hapi/boom'
 
 async function connectToWhatsApp () {
     const { state, saveCreds } = await useMultiFileAuthState('./auth_info_baileys')
-    const suki = makeWASocket({
+    const guns = makeWASocket({
         // can provide additional config here
         auth: state,
         printQRInTerminal: true
@@ -355,7 +355,7 @@ import makeWASocket, { useSingleFileAuthState, useMongoFileAuthState } from 'sec
 
 // Single Auth
 const { state, saveState } = await useSingleFileAuthState('./auth_info_baileys.json') 
-const suki = makeWASocket({
+const guns = makeWASocket({
         auth: state,
         printQRInTerminal: true
     })
@@ -382,7 +382,7 @@ const connectAuth = async() => {
 
 const Authentication = await connectAuth()
 const { state, saveCreds } = await useMongoFileAuthState(Authentication)
-const suki = makeWASocket({
+const guns = makeWASocket({
         auth: state,
         printQRInTerminal: true
     })
@@ -458,7 +458,7 @@ setInterval(() => {
     store.writeToFile('./baileys_store.json')
 }, 10_000)
 
-const suki = makeWASocket({ })
+const guns = makeWASocket({ })
 // will listen from this socket
 // the store can listen from a new socket once the current socket outlives its lifetime
 store.bind(guns.ev)
